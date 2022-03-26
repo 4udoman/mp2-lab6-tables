@@ -59,8 +59,10 @@ public:
     if (it == end())
       return;
     Node** p = &pFirst, * i;
-    while (iterator(*p) != it)
+    while (iterator(*p) != it && *p != nullptr)
       p = &((*p)->next);
+    if (*p == nullptr)
+        return;
     i = *p;
     *p = (*p)->next;
     if (*p == nullptr)
