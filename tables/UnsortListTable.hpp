@@ -4,24 +4,29 @@
 class UnsortListTable final : public TTable {
 private:
   TList<std::shared_ptr<PolinomObj>> list;
-  friend class PolinomObj;
 public:
-  UnsortListTable() {} // Добавить реализацию
+  UnsortListTable() {} // Г„Г®ГЎГ ГўГЁГІГј Г°ГҐГ Г«ГЁГ§Г Г¶ГЁГѕ
 
-  void Insert(std::shared_ptr<PolinomObj> obj) {
+  void Insert(std::shared_ptr<PolinomObj> obj) override {
     list.InsertFirst(obj);
   }
 
-  std::shared_ptr<PolinomObj> Find(std::string name) {
+  std::shared_ptr<PolinomObj> Find(std::string name) override {
     for (auto it = list.cbegin(); it != list.cend(); ++it)
       if ((*it)->getName() == name)
         return *it;
     return nullptr;
   }
 
-  void Delete(std::string _name) {
+  void Delete(std::string _name) override {
     for (auto it = list.begin(); it != list.end(); ++it)
       if ((*it)->getName() == _name)
         list.Delete(it);
   }
+  
+  void Print() override {
+      for (auto it = list.cbegin(); it != list.cend(); ++it)
+          std::cout << (*it)->getName() << " : " << (*it)->getStrPol() << std::endl;
+  }
+  
 };
