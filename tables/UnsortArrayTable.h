@@ -2,8 +2,8 @@
 #include <vector>
 #include "TTable.h"
 
-template <class TKey, class TData>
-class UnsortArrayTable final : public TTable<class TKey, class TData> {
+template <typename TKey, typename TData>
+class UnsortArrayTable final : public TTable<typename TKey, typename TData> {
 private:
   struct Cell {
     TData val;
@@ -14,7 +14,7 @@ private:
   int maxInd;
 
 public:
-  UnsortArrayTable(int sz) : data(sz), maxInd(0) {}
+  UnsortArrayTable(int sz = 1) : data(sz), maxInd(0) {}
 
   void Insert(TData _data) {
     if (data.size() == maxInd)
@@ -31,7 +31,7 @@ public:
   }
 
   TData* Find(TKey name) {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < data.size(); i++)
       if (!data[i].isNone && data[i].val == name)
         return &data[i].val;
     return nullptr;  
@@ -40,15 +40,15 @@ public:
   void Delete(TKey name) {
     int i = 0;
     for (; i < maxInd; i++) {
-      if (!data[i].isNull && data[i] == name) {
-        data[i].isNull = true;
+      if (!data[i].isNone && data[i].val == name) {
+        data[i].isNone = true;
         break;
       }
     }
 
     if (i == maxInd - 1) {
       for (; i > 0; i--) {
-        if (data[i] == TData())
+        if (data[i].isNone)
           maxInd--;
         else
           break;
@@ -58,7 +58,7 @@ public:
 
   void Print() {
     for (int i = 0; i < maxInd; i++) {
-      if (!data[i].isNull)
+      if (!data[i].isNone)
         std::cout << data[i].val;
       else
         std::cout << '\n';

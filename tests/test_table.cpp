@@ -1,8 +1,14 @@
 #include "gtest/gtest.h"
 #include "TableManager.h"
+#include <string>
 
 // Common tests for all tables
-typedef UnsortListTable<int, int> Tab;
+typedef UnsortListTable<std::string, std::string> Tab;
+//typedef UnsortArrayTable<std::string, std::string> Tab;
+//typedef SortArrayTable<std::string, std::string> Tab;
+//typedef OpenHashTable<std::string, std::string> Tab;
+//typedef ChainHashTable<std::string, std::string> Tab;
+//typedef AVLTreeTable<std::string, std::string> Tab; ????
 
 TEST(TTable, can_create_table)
 {

@@ -2,8 +2,8 @@
 #include "TTable.h"
 #include <vector>
 
-template <class TKey, class TData>
-class SortArrayTable final : public TTable<class TKey, class TData> {
+template <typename TKey, typename TData>
+class SortArrayTable final : public TTable<typename TKey, typename TData> {
 private:
   struct Cell {
     TData val;
@@ -25,7 +25,7 @@ private:
   }
 
 public:
-  SortArrayTable(int sz) : countElem(0), row(sz) {}
+  SortArrayTable(int sz = 1) : countElem(0), row(sz) {}
 
   void Insert(TData data){
     int left = 0;

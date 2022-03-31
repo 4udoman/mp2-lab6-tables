@@ -1,12 +1,12 @@
 #pragma once
 #include "TTable.h"
 
-template <class TKey, class TData>
-class OpenHashTable final : public TTable<class TKey, class TData> {
+template <typename TKey, typename TData>
+class OpenHashTable final : public TTable<typename TKey, typename TData> {
 private:
   struct Bucket {
     TData data;
-    bool isNone
+    bool isNone;
     bool isDeleted;
   };
   Bucket* table;
@@ -14,15 +14,8 @@ private:
   unsigned int curSize;
   unsigned int step = 7;
 
-  unsigned int Hash(const TData& data) {
-    unsigned int h = 0;
-    for (char c : key)
-      h = (h * 1664525) + c + 1013904223;
-    return h % size;
-  }
-
 public:
-  OpenHashTable(unsigned int s) : size(s), curSize(0) {
+  OpenHashTable(unsigned int s = 1) : size(s), curSize(0) {
     table = new Bucket[s]{ TData(), true, false };
   }
 
@@ -31,7 +24,7 @@ public:
   void Insert(TData data) {
     if (size != curSize) // no free space
       throw -1;
-    unsigned int h = Hash(data);
+    unsigned int h = Hash(data, size);
     while (!table[h].isDeleted) {
       if (table[h].isNone)
         break;
@@ -45,7 +38,7 @@ public:
   }
 
   TData* Find(TKey key){
-    unsigned int h = Hash(key), i = 0;
+    unsigned int h = Hash(key, size), i = 0;
     while (!(table[h].isDeleted || i == size)) {
       if (table[h].isNone)
         return nullptr;
@@ -60,7 +53,7 @@ public:
   }
 
   void Delete(TKey key){
-    unsigned int h = Hash(name), i = 0;
+    unsigned int h = Hash(key, size), i = 0;
     while (!(table[h].isDeleted || i == size)) {
       if (table[h].isNone)
         return;

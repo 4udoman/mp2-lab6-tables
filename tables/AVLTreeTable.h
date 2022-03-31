@@ -2,8 +2,8 @@
 #include "TTable.h"
 #include "avl_tree.hpp"
 
-template <class TKey, class TData>
-class AVLTable final : public TTable<class TKey, class TData> {
+template <typename TKey, typename TData>
+class AVLTable final : public TTable<typename TKey, typename TData> {
 private:
   AVLTree<TData> tree;
 public:

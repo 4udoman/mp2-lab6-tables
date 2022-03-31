@@ -1,22 +1,16 @@
 #pragma once
 #include "TTable.h"
 #include <vector>
+#include "list.hpp"
 
-template <class TKey, class TData>
-class ChainHashTable final : public TTable<class TKey, class TData> {
+template <typename TKey, typename TData>
+class ChainHashTable final : public TTable<typename TKey, typename TData> {
 private:
   std::vector<TList<TData>> tables;
   int size;
-  
-  unsigned int Hash(const TKey key) {
-    unsigned int h = 0;
-    for (char c : key)
-      h = (h * 1664525) + c + 1013904223;
-    return h % size;
-  }
 
 public:
-  ChainHashTable(int sz) : size(sz), tables(size) {}
+  ChainHashTable(int sz = 1) : size(sz), tables(size) {}
 
   ~ChainHashTable() {
     tables.clear();
@@ -27,13 +21,13 @@ public:
       return;
     else
     {
-      int index = Hash(data);
+      int index = Hash(data, size);
       tables[index].InsertFirst(data);
     }
   }
 
   TData* Find(TKey key){
-    int index = Hash(key);
+    int index = Hash(key, size);
     for (auto it = tables[index].begin(); it != tables[index].end(); ++it)
       if (*it == key)
         return &(*it);
@@ -41,7 +35,7 @@ public:
   }
 
   void Delete(TKey key) {
-    int index = Hash(key);
+    int index = Hash(key, size);
     for (auto it = tables[index].begin(); it != tables[index].end(); ++it)
       if (*it == key)
         return tables[index].Delete(it); // void?
